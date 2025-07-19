@@ -50,21 +50,32 @@ print("Slope:", model.coef_[0])
 # Print the intercept (where the line crosses the y-axis)
 print(f"Intercept: {model.intercept_:2f}")
 
-# Use the model to make predictions on the test data
-y_pred = model.predict(x_test)
-print(y_pred)  # Show predicted sales values
+# # Use the model to make predictions on the test data
+# y_pred = model.predict(x_test)
+# print(y_pred)  # Show predicted sales values
 
-# Calculate residuals (difference between actual and predicted values)
-residuals = y_test - y_pred
-print(residuals)  # Show the errors (how far off the predictions were)
+# # Calculate residuals (difference between actual and predicted values)
+# residuals = y_test - y_pred
+# print(residuals)  # Show the errors (how far off the predictions were)
 
-# Create a scatter plot to compare actual sales vs predicted sales
-sns.scatterplot(x=y_test, y=y_pred)
+# # Create a scatter plot to compare actual sales vs predicted sales
+# sns.scatterplot(x=y_test, y=y_pred)
 
-# Label the axes and add a title
-plt.xlabel("Actual Sales")
-plt.ylabel("Predicted Sales")
-plt.title("Actual vs Predicted Sales")
+# # Label the axes and add a title
+# plt.xlabel("Actual Sales")
+# plt.ylabel("Predicted Sales")
+# plt.title("Actual vs Predicted Sales")
 
-# Show the plot
+# # Show the plot
+# plt.show()
+
+
+# Plot the regression line on the test data
+plt.figure(figsize=(8, 6))
+plt.scatter(x_test, y_test, color='blue', label='Actual Sales')
+plt.plot(x_test, model.predict(x_test), color='red', linewidth=2, label='Predicted Sales (Regression Line)')
+plt.title('TV Ad Spending vs. Sales (Test Set)')
+plt.xlabel('TV Ad Spending ($ thousands)')
+plt.ylabel('Sales (thousands of units)')
+plt.legend()
 plt.show()
