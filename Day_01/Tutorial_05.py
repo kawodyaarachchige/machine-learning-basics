@@ -93,3 +93,75 @@ y_pred = model.predict(X_test_bow)
 for i in range(len(reviews)):
     print(f"Review: {reviews[i]}")
     print(f"Sentiment: {y_pred[i]}\n")
+
+# This line saves the trained model to a file called "model.joblib"
+joblib.dump(model, 'model.joblib')
+
+
+from google.cloud import aiplatform
+
+aiplatform.init(
+    project="aqueous-thought-470603-m5",
+    location="us-central1"
+)
+
+endpoint = aiplatform.Endpoint(
+    endpoint_name='8598324965231558656'
+)
+
+print("✅ Endpoint is ready to predict..")
+
+
+new_review = ["The material felt cheap and it was not what I expected."]
+
+print(f"New review to classify :",{new_review[0]})
+
+print("Step 1 : converting to a sparse matrix...")
+sparse_matrix = vectorizer.transform(new_review)
+
+print("Step 2 : converting to a dense Numpy array...")
+numpy_array = sparse_matrix.toarray()
+
+print(" Step 3 : converting to a list for API call...")
+processed_review = numpy_array.tolist()
+
+print("\n Sending prediction request to the Vertex AI endpoint...")
+
+# Make the prediction
+response = endpoint.predict(instances=processed_review)
+
+# Print the prediction
+print(response)
+print(type(response))
+
+
+'''
+new_review = ["The material felt cheap and it was not what I expected.",
+              "The dress fit perfectly and was very comfortable.",
+              "The shirt was so soft and look amazing.",
+              "The size was way too small.",
+              "Absolutely beautiful and worth the price."
+              ]
+
+for review in new_review:
+    print(f"New review to classify :",{review})
+
+    print("Step 1 : converting to a sparse matrix...")
+    sparse_matrix = vectorizer.transform([review])
+
+    print("Step 2 : converting to a dense Numpy array...")
+    numpy_array = sparse_matrix.toarray()
+
+    print(" Step 3 : converting to a list for API call...")
+    processed_review = numpy_array.tolist()
+
+    print("\n Sending prediction request to the Vertex AI endpoint...")
+
+    # Make the prediction
+    response = endpoint.predict(instances=processed_review)
+
+    # Print the prediction
+    print(response)
+    print(type(response))
+
+'''
